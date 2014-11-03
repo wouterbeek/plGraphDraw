@@ -1,0 +1,24 @@
+[submodule "plDcg"]
+	path = plDcg
+	url = https://github.com/wouterbeek/plDcg.git
+[submodule "Prolog-Library-Collection"]
+	path = Prolog-Library-Collection
+	url = https://github.com/wouterbeek/Prolog-Library-Collection.git
+[submodule "plSvg"]
+	path = plSvg
+	url = https://github.com/wouterbeek/plSvg.git
+[submodule "plHtml"]
+	path = plHtml
+	url = https://github.com/wouterbeek/plHtml.git
+[submodule "plGraph"]
+	path = plGraph
+	url = https://github.com/wouterbeek/plGraph.git
+[submodule "plTree"]
+	path = plTree
+	url = https://github.com/wouterbeek/plTree.git
+[submodule "plGraphViz"]
+	path = plGraphViz
+	url = https://github.com/wouterbeek/plGraphViz.git
+[submodule "plSet"]
+	path = plSet
+	url = https://github.com/wouterbeek/plSet.git
