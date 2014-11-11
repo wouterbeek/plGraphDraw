@@ -63,7 +63,7 @@ Vertex coordinates:
 :- use_module(generics(list_ext)).
 :- use_module(generics(option_ext)).
 
-:- use_module(plGraph(graph_generics)).
+:- use_module(plGraph(graph_srep)).
 
 :- predicate_options(build_gif/3, 3, [
      pass_to(build_gif/4, 4)
@@ -225,7 +225,7 @@ graph_attributes(GAttrs, Options):-
     true
   ),
   % Overlap.
-  option(graph_overlap(Overlap), Options, false)
+  option(graph_overlap(Overlap), Options, false),
 
   merge_options(
     [
