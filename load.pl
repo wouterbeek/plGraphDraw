@@ -13,7 +13,13 @@
      plDcg,
      plGraph,
      plGraphViz,
+     plHtml,
+     plHttp,
+     plLangTag,
+     plLattice,
      plSet,
      plSvg,
-     plTree
+     plTree,
+     plUri,
+     plXml
    ]).

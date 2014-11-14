@@ -26,8 +26,7 @@ Web-based interface to currently loaded FCA contexts.
 
 :- use_module(plXml(xml_dom)).
 
-:- use_module(plGraph(gif_build)).
-:- use_module(plGraph(graph_generic)).
+:- use_module(plGraph(graph_srep)).
 
 :- use_module(plGraphViz(gv_file)).
 
@@ -35,9 +34,11 @@ Web-based interface to currently loaded FCA contexts.
 
 :- use_module(plRdf(rdf_graph)).
 
-:- use_module(fca(bordat)).
-:- use_module(fca(fca_concept)).
-:- use_module(fca(fca_context)).
+:- use_module(plLattice_fca(bordat)).
+:- use_module(plLattice_fca(fca_concept)).
+:- use_module(plLattice_fca(fca_context)).
+
+:- use_module(plGraphDraw_graph(gif_build)).
 
 :- meta_predicate(concept_lattice(+,:,?,?)).
 

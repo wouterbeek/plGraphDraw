@@ -22,3 +22,18 @@
 [submodule "plSet"]
 	path = plSet
 	url = https://github.com/wouterbeek/plSet.git
+[submodule "plUri"]
+	path = plUri
+	url = https://github.com/wouterbeek/plUri.git
+[submodule "plHttp"]
+	path = plHttp
+	url = https://github.com/wouterbeek/plHttp.git
+[submodule "plXml"]
+	path = plXml
+	url = https://github.com/wouterbeek/plXml.git
+[submodule "plLattice"]
+	path = plLattice
+	url = https://github.com/wouterbeek/plLattice.git
+[submodule "plLangTag"]
+	path = plLangTag
+	url = https://github.com/wouterbeek/plLangTag.git
