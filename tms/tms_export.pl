@@ -25,7 +25,7 @@ Exports TMS belief states,
 :- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 :- use_module(library(semweb/rdfs)).
 
-:- use_module(tms(tms)).
+:- use_module(plTms(tms)).
 
 :- rdf_register_prefix(tms, 'http://www.wouterbeek.com/tms.owl#').
 

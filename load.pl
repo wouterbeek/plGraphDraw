@@ -9,6 +9,7 @@
 
 :- use_module(load_project).
 :- load_project([
+     mt-'ModelTheory',
      plc-'Prolog-Library-Collection',
      plDcg,
      plGraph,
@@ -17,9 +18,12 @@
      plHttp,
      plLangTag,
      plLattice,
+     plRdf,
      plSet,
      plSvg,
+     plTms,
      plTree,
      plUri,
-     plXml
+     plXml,
+     plXsd
    ]).

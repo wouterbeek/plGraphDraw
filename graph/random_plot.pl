@@ -3,10 +3,10 @@
   [
     random_plot//2, % +Graph:ugraph
                     % +Options:list(nvpair)
-    random_vertex_point/4 % +Vertices:ordset
-                          % +Options:list(nvpair)
-                          % +Vertex
-                          % -Point:compound
+    random_coord/4 % +Vertices:ordset
+                   % +Options:list(nvpair)
+                   % +Vertex
+                   % -Point:compound
   ]
 ).
 
@@ -21,14 +21,14 @@ Random graph plotting.
 :- use_module(library(apply)).
 :- use_module(library(random)).
 
-:- use_module(plGraph_plot(plot_generics)).
-
 :- use_module(plSvg(svg_dcg)).
+
+:- use_module(plGraphDraw(graph/plot_generics)).
 
 :- predicate_options(random_plot/2, 2, [
      pass_to(surface_size/2, 2)
    ]).
-:- predicate_options(random_vertex_point/4, 2, [
+:- predicate_options(random_coord/4, 2, [
      pass_to(surface_size/2, 2)
    ]).
 
@@ -42,9 +42,11 @@ random_plot(G, Options) -->
     R = 0.5,
     vertices(G, Vs)
   },
-  svg:svg(
-    [height=Height,version='1.1',width=Width],
-    [\random_plot_vertices(Width-Height, R, Vs)]
+  html(
+    svg(
+      [height=Height,version='1.1',width=Width],
+      [\random_plot_vertices(Width-Height, R, Vs)]
+    )
   ).
 
 
@@ -52,11 +54,14 @@ random_plot(G, Options) -->
 %!   +SurfaceSize:pair(float),
 %!   +Radius:float,
 %!   +Vertices:list
-% )// .
+%! )// .
 
 random_plot_vertices(Width-Height, R, [H|T]) -->
-  {random_point([Width,Height], [X,Y])},
-  circle(point(X,Y,_), R, []),
+  {
+    random_point([Width,Height], [X,Y]),
+    with_output_to(atom(HId), write_canonical(H))
+  },
+  circle(point(X,Y,_), R, [id=HId]),
   random_plot_vertices(Width-Height, R, T).
 random_plot_vertices(_, _, []) --> [].
 

@@ -32,13 +32,13 @@ Web-based interface to currently loaded FCA contexts.
 
 :- use_module(plHtml(html_table)).
 
-:- use_module(plRdf(rdf_graph)).
+:- use_module(plRdf(graph/rdf_graph)).
 
-:- use_module(plLattice_fca(bordat)).
-:- use_module(plLattice_fca(fca_concept)).
-:- use_module(plLattice_fca(fca_context)).
+:- use_module(plLattice(fca/bordat)).
+:- use_module(plLattice(fca/fca_concept)).
+:- use_module(plLattice(fca/fca_context)).
 
-:- use_module(plGraphDraw_graph(gif_build)).
+:- use_module(plGraphDraw(graph/gif_build)).
 
 :- meta_predicate(concept_lattice(+,:,?,?)).
 

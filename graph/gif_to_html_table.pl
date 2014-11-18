@@ -17,10 +17,14 @@ Generate HTML tables representing graphs using the GIF representation.
 :- use_module(library(apply)).
 :- use_module(library(option)).
 
+:- use_module(generics(list_ext)).
 :- use_module(pl(pl_log)).
 
 :- use_module(plDcg(dcg_arrow)).
+:- use_module(plDcg(dcg_atom)).
 :- use_module(plDcg(dcg_generics)).
+
+:- use_module(plGraph(graph_edge)).
 
 :- use_module(plHtml(html_dcg)).
 :- use_module(plHtml(html_table)).

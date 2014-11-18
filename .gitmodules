@@ -37,3 +37,15 @@
 [submodule "plLangTag"]
 	path = plLangTag
 	url = https://github.com/wouterbeek/plLangTag.git
+[submodule "plTms"]
+	path = plTms
+	url = https://github.com/wouterbeek/plTms.git
+[submodule "plRdf"]
+	path = plRdf
+	url = https://github.com/wouterbeek/plRdf.git
+[submodule "plXsd"]
+	path = plXsd
+	url = https://github.com/wouterbeek/plXsd.git
+[submodule "ModelTheory"]
+	path = ModelTheory
+	url = https://github.com/wouterbeek/ModelTheory.git

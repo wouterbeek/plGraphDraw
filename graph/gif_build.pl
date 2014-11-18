@@ -1,5 +1,5 @@
 :- module(
-  gv_gif,
+  gif_build,
   [
     build_gif/3, % +Edges:ordset
                  % -Gif:compound

@@ -16,15 +16,16 @@ Bipartite graph plotting.
 @version 2014/11
 */
 
-:- use_module(library(lists), exclude([delete/3])).
+:- use_module(library(lists), except([delete/3])).
 
 :- use_module(plGraph(graph_edge)).
 :- use_module(plGraph(graph_type)).
-:- use_module(plGraph_plot(plot_generics)).
 
 :- use_module(plSvg(svg_dcg)).
 
-:- predicate_optiosn(bipartite_plot/2, 2, [
+:- use_module(plGraphDraw(graph/plot_generics)).
+
+:- predicate_options(bipartite_plot/2, 2, [
      pass_to(surface_size/2, 2)
    ]).
 
@@ -37,7 +38,7 @@ bipartite_plot(G, Options) -->
     bipartite(G, Vs1, Vs2),
     
     % Global parameters.
-    surface_size(SurfaceSize, Options),
+    surface_size(Width-Height, Options),
     R = 0.5,
     
     % Coordinates of bipartite lines.
@@ -47,20 +48,23 @@ bipartite_plot(G, Options) -->
     Y2Line is Height,
     
     % Distance between vertices on bipartite lines.
-    length(Vs, NumberOfVs),
-    Distance is Height / (NumberOfVs - 1),
+    length(Vs1, NumberOfVs1),
+    length(Vs2, NumberOfVs2),
+    Distance is Height / (max(NumberOfVs1,NumberOfVs2) - 1),
     
     edges(G, Es)
   },
-  svg:svg(
-    [],
-    [
-      \line(point(XLine1,Y1Line,_), point(XLine1,Y2Line,_), []),
-      \line(point(XLine2,Y1Line,_), point(XLine2,Y2Line,_), []),
-      \vertices(XLine1, R, Vs1),
-      \vertices(XLine2, R, Vs2),
-      \edges(Vs1, Vs2, XLine1, XLine2, Distance, Es)
-    ]
+  html(
+    svg(
+      [],
+      [
+        \line(point(XLine1,Y1Line,_), point(XLine1,Y2Line,_), []),
+        \line(point(XLine2,Y1Line,_), point(XLine2,Y2Line,_), []),
+        \vertices(XLine1, R, Vs1),
+        \vertices(XLine2, R, Vs2),
+        \edges(Vs1, Vs2, XLine1, XLine2, Distance, Es)
+      ]
+    )
   ).
 
 
@@ -77,9 +81,9 @@ bipartite_plot(G, Options) -->
 edges(Vs1, Vs2, X1, X2, Distance, [V1-V2|T]) -->
   {
     nth0(I1, Vs1, V1),
-    Y1 is Distance1 * I1,
+    Y1 is Distance * I1,
     nth0(I2, Vs2, V2),
-    Y2 is Distance2 * I2
+    Y2 is Distance * I2
   },
   line(point(X1,Y1,_), point(X2,Y2,_), []),
   edges(Vs1, Vs2, X1, X2, Distance, T).
@@ -90,7 +94,7 @@ edges(_, _, _, _, _, []) --> [].
 %! vertices(+X:float, +Radius:float, +Vertices:ordset)// .
 
 vertices(X, R, Vs) -->
-  vertices(Vs, X, R, Distance, Vs).
+  vertices(Vs, X, R, 0.5, Vs).
 
 
 %! vertices(

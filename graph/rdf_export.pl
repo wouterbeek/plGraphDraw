@@ -34,7 +34,7 @@ Predicates for exporting RDF graphs to the Graph Interchange Format (GIF).
 :- use_module(library(apply)).
 :- use_module(library(lists), except([delete/3])).
 :- use_module(library(option)).
-:- use_module(library(semweb/rdf_db)).
+:- use_module(library(semweb/rdf_db), except([rdf_node/1])).
 :- use_module(library(semweb/rdfs)).
 
 :- use_module(generics(db_ext)).
@@ -42,16 +42,17 @@ Predicates for exporting RDF graphs to the Graph Interchange Format (GIF).
 
 :- use_module(plDcg(dcg_generics)).
 
+:- use_module(plGraph(graph_edge)).
 :- use_module(plGraph(graph_srep)).
 
-:- use_module(plGraphDraw(gif_build)).
+:- use_module(plGraphDraw(graph/gif_build)).
 
-:- use_module(plRdf(rdf_graph_theory)).
 :- use_module(plRdf(rdf_image)).
 :- use_module(plRdf(rdf_name)).
-:- use_module(plRdf(rdf_prefix)).
-:- use_module(plRdf(rdf_read)).
-:- use_module(plRdf_term(rdf_term)).
+:- use_module(plRdf(api/rdf_read)).
+:- use_module(plRdf(graph/rdf_graph_theory)).
+:- use_module(plRdf(management/rdf_prefix)).
+:- use_module(plRdf(term/rdf_term)).
 
 :- rdf_register_prefix(rdf_image, 'http://www.wouterbeek.com/RDF-Image.owl#').
 
@@ -236,15 +237,11 @@ rdf_current_prefix(Prefix):-
 %   * Other options are passed to rdf_graph_to_gif/4 and rdf_directed_edge/3.
 
 rdf_term_to_gif(Term, Gif, Options1):-
-  select_option(depth(Depth), Options1, Options2, 1),
-  option(graph(Graph), Options2, _VAR),
-  bounded_breadthfirst_graph_search(
-    rdf_directed_edge(Options2, Graph),
-    Depth,
-    Term,
-    Vs,
-    Es
-  ),
+  select_option(depth(_), Options1, Options2, 1),
+  option(graph(_), Options2, _VAR),
+  % @tbd Use lodCache for this.
+  Vs = [Term],
+  Es = [],
   rdf_graph_to_gif(Vs, Es, Gif, Options2).
 % Aux.
 rdf_directed_edge(Options, Graph, FromV, ToV):-
@@ -258,13 +255,13 @@ rdf_directed_edge(Options, Graph, FromV, ToV):-
 %! rdf_edge_arrowhead(+Edge:compound, -ArrowHead:atom) is det.
 
 rdf_edge_arrowhead(_-P-_, box):-
-  rdf_memberchk(P, [rdfs:subClassOf]), !.
+  rdf_equal(P, rdfs:subClassOf), !.
 rdf_edge_arrowhead(_-P-_, diamond):-
-  rdf_memberchk(P, [rdfs:subPropertyOf]), !.
+  rdf_equal(P, rdfs:subPropertyOf), !.
 rdf_edge_arrowhead(_-P-_, empty):-
-  rdf_memberchk(P, [rdf:type]), !.
+  rdf_equal(P, rdf:type), !.
 rdf_edge_arrowhead(_-P-_, none):-
-  rdf_memberchk(P, [rdfs:label]), !.
+  rdf_equal(P, rdfs:label), !.
 % Others.
 rdf_edge_arrowhead(_, normal).
 
@@ -295,9 +292,10 @@ rdf_edge_color(_, _, _, black).
 
 % Some edge labels are not displayed (e.g., RDF(S) terminology).
 rdf_edge_label(_, _-P-_, ''):-
-  rdf_memberchk(
-    P,
-    [rdf:type,rdfs:label,rdfs:subClassOf,rdfs:subPropertyOf]
+  (   rdf_equal(P, rdf:type)
+  ;   rdf_equal(P, rdfs:label)
+  ;   rdf_equal(P, rdfs:subClassOf)
+  ;   rdf_equal(P, rdfs:subPropertyOf)
   ), !.
 % Explicitly registered replacements.
 rdf_edge_label(Graph, _-P-_, ELabel):-
@@ -317,10 +315,13 @@ rdf_edge_style(Graph, E, EStyle):-
   rdf:rdf_edge_style(Graph, E, EStyle), !.
 % Hierarchy edges.
 rdf_edge_style(_, _-P-_, solid):-
-  rdf_memberchk(P, [rdf:type,rdfs:subClassOf,rdfs:subPropertyOf]), !.
+  (   rdf_equal(P, rdf:type)
+  ;   rdf_equal(P, rdfs:subClassOf)
+  ;   rdf_equal(P, rdfs:subPropertyOf)
+  ), !.
 % Label edges.
 rdf_edge_style(_, _-P-_, dotted):-
-  rdf_memberchk(P, [rdfs:label]), !.
+  rdf_equal(P, rdfs:label), !.
 % Others.
 rdf_edge_style(_, _, solid).
 
