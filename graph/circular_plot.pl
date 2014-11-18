@@ -20,7 +20,7 @@ Circular graph plotting.
 
 :- use_module(plGraph_plot(plot_generics)).
 
-:- use_module(plSvg(svg_shape)).
+:- use_module(plSvg(svg_dcg)).
 
 :- predicate_options(random_plot/4, 2, [
      surface_size(+pair(float))

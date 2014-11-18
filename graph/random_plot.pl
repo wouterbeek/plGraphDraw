@@ -23,7 +23,7 @@ Random graph plotting.
 
 :- use_module(plGraph_plot(plot_generics)).
 
-:- use_module(plSvg(svg_shape)).
+:- use_module(plSvg(svg_dcg)).
 
 :- predicate_options(random_plot/2, 2, [
      pass_to(surface_size/2, 2)

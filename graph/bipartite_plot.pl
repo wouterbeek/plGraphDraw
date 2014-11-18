@@ -22,7 +22,7 @@ Bipartite graph plotting.
 :- use_module(plGraph(graph_type)).
 :- use_module(plGraph_plot(plot_generics)).
 
-:- use_module(plSvg(svg_shape)).
+:- use_module(plSvg(svg_dcg)).
 
 :- predicate_optiosn(bipartite_plot/2, 2, [
      pass_to(surface_size/2, 2)
