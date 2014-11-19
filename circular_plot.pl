@@ -18,9 +18,11 @@ Circular graph plotting.
 @version 2014/11
 */
 
+:- use_module(generics(list_ext)).
+
 :- use_module(plSvg(svg_dcg)).
 
-:- use_module(plGraphDraw(graph/plot_generics)).
+:- use_module(plGraphDraw(plot_generics)).
 
 :- predicate_options(random_plot/4, 2, [
      surface_size(+pair(float))
@@ -47,7 +49,7 @@ circular_plot(G, Options) -->
     svg(
       [],
       [
-        \circle(point(X0,Y0,_), GR, []),
+        \circle(point(X0,Y0,_), GRadius, [], []),
         \vertices(VRadius, Vs)
       ]
     )
@@ -68,17 +70,25 @@ vertices(VRadius, Vs) -->
 %!   +Index:nonneg
 %! )// .
 
-vertices(VRadius, NumberOfVs, [H|T], I1) -->
+vertices(VRadius, NumberOfVs, [V|Vs], Index1) -->
   {
     % Vertex-specific angle.
     VAngle is 2 * pi / NumberOfVs,
     
     % (X,Y)-coordinates.
-    X is VRadius + VRadius * cos(I1 * VAngle),
-    Y is VRadius + VRadius * sin(I1 * VAngle)
+    X is VRadius + VRadius * cos(Index1 * VAngle),
+    Y is VRadius + VRadius * sin(Index1 * VAngle),
+    
+    % Identifier for vertex.
+    with_output_to(atom(VId), write_canonical(V)),
+    
+    % On to the next index.
+    Index2 is Index1 + 1
   },
-  circle(point(X,Y,_), VRadius, []),
-  vertices(VRadius, NumberVs, T, I2).
+  html([
+    circle(point(X,Y,_), VRadius, [id=VId]),
+    \vertices(VRadius, NumberOfVs, Vs, Index2)
+  ]).
 vertices(_, _, [], _) --> [].
 
 
@@ -120,3 +130,4 @@ circular_vertex_point(Vs, Options, V, point(X,Y,true)):-
   % (X,Y)-coordinate.
   X is Radius + Radius * cos(I * AnglePerVertice),
   Y is Radius + Radius * sin(I * AnglePerVertice).
+

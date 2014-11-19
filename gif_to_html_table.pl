@@ -15,6 +15,7 @@ Generate HTML tables representing graphs using the GIF representation.
 */
 
 :- use_module(library(apply)).
+:- use_module(library(http/html_write)).
 :- use_module(library(option)).
 
 :- use_module(generics(list_ext)).
@@ -97,7 +98,7 @@ gif_cell(VTerms, Options, edge(FromId,ToId,_)) -->
     % Label.
     (   option(edge_label(LabelFunction), Options)
     ->  call(LabelFunction, E, ELabel)
-    ;   dcg_with_output_to(atom(ELabel), write_canonical_blobs(E))
+    ;   with_output_to(atom(ELabel), write_canonical_blobs(E))
     )
   },
   html(div([class=edge,syle=Style], ELabel)).
@@ -113,7 +114,7 @@ gif_cell(_, Options, vertex(_,V,_)) -->
     % Label.
     (   option(vertex_label(LabelFunction), Options)
     ->  call(LabelFunction, V, VLabel)
-    ;   dcg_with_output_to(atom(VLabel), write_canonical_blobs(V))
+    ;   with_output_to(atom(VLabel), write_canonical_blobs(V))
     )
   },
   html(div([class=vertex,style=Style], VLabel)).

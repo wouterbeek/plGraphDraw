@@ -19,6 +19,8 @@ Convert from GIF (Graph Interchange Format) to SVG.
 :- use_module(library(option)).
 :- use_module(library(settings)).
 
+:- use_module(plSvg(svg_dcg)).
+
 :- setting(
   default_surface_size,
   pair(float),
@@ -31,7 +33,7 @@ Convert from GIF (Graph Interchange Format) to SVG.
 %! edge( +Vertices:ordset, +Edge:compound)// .
 % Generates the SVG element for the given edge term.
 
-edge(Vs, edge(FromVId,ToVId,EAttrs1), Element):-
+edge(Vs, edge(FromVId,ToVId,EAttrs)) -->
   {
     % Ids.
     nth0(FromVId, Vs, FromV),
@@ -49,12 +51,22 @@ edge(Vs, edge(FromVId,ToVId,EAttrs1), Element):-
     option(label(EName), EAttrs, nolabel),
 
     % Color
-    select_option(color(EColor), EAttrs, black)
+    select_option(color(EColor), EAttrs, black),
+    
+    % Id
+    with_output_to(atom(EId), write_canonical(FromV-ToV))
   },
-  svg:line(X1, Y1, X2, Y2, [id=EName,stroke=EColor]).
+  html(
+    line(
+      point(X1,Y1,false),
+      point(X2,Y2,false),
+      [id=EId,stroke=EColor],
+      title([], EName)
+    )
+  ).
 
-edges([]) --> [].
-edges([H|T]) --> edge(H), edges(T).
+edges(_, []) --> [].
+edges(Vs, [H|T]) --> edge(Vs, H), edges(Vs, T).
 
 
 
@@ -73,13 +85,13 @@ gif_to_svg(graph(Vs,_,Es,GAttrs)) -->
     setting(default_surface_size, DefaultSurfaceSize),
     option(surface(Width-Height), GAttrs, DefaultSurfaceSize)
   },
-  html(
+  html([
     \rdf_ns(svg),
-    svg:svg(
+    svg(
       [class=graph,height=Height,id=GName,version='1.1',width=Width],
       [\vertices(Vs),\edges(Vs, Es)]
     )
-  ).
+  ]).
 
 
 
@@ -103,7 +115,13 @@ vertex(Vs, vertex(VId,_,VAttrs)) -->
     % Color.
     option(color(VColor), VAttrs, blank)
   },
-  svg:circle(X0, Y0, R, [id=VName,stroke=VColor]).
+  html(
+    circle(point(X0,Y0,false), R, [id=VId,stroke=VColor], title([], VName))
+  ).
 
-vertices([]) --> [].
-vertices([H|T]) --> vertex(H), vertices(T).
+vertices(Vs) -->
+  vertices(Vs, Vs).
+
+vertices(_, []) --> [].
+vertices(Vs, [H|T]) --> vertex(Vs, H), vertices(Vs, T).
+

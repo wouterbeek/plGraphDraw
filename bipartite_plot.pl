@@ -16,6 +16,7 @@ Bipartite graph plotting.
 @version 2014/11
 */
 
+:- use_module(library(http/html_write)).
 :- use_module(library(lists), except([delete/3])).
 
 :- use_module(plGraph(graph_edge)).
@@ -23,7 +24,7 @@ Bipartite graph plotting.
 
 :- use_module(plSvg(svg_dcg)).
 
-:- use_module(plGraphDraw(graph/plot_generics)).
+:- use_module(plGraphDraw(plot_generics)).
 
 :- predicate_options(bipartite_plot/2, 2, [
      pass_to(surface_size/2, 2)
@@ -58,8 +59,8 @@ bipartite_plot(G, Options) -->
     svg(
       [],
       [
-        \line(point(XLine1,Y1Line,_), point(XLine1,Y2Line,_), []),
-        \line(point(XLine2,Y1Line,_), point(XLine2,Y2Line,_), []),
+        \line(point(XLine1,Y1Line,_), point(XLine1,Y2Line,_), [], []),
+        \line(point(XLine2,Y1Line,_), point(XLine2,Y2Line,_), [], []),
         \vertices(XLine1, R, Vs1),
         \vertices(XLine2, R, Vs2),
         \edges(Vs1, Vs2, XLine1, XLine2, Distance, Es)
@@ -85,8 +86,10 @@ edges(Vs1, Vs2, X1, X2, Distance, [V1-V2|T]) -->
     nth0(I2, Vs2, V2),
     Y2 is Distance * I2
   },
-  line(point(X1,Y1,_), point(X2,Y2,_), []),
-  edges(Vs1, Vs2, X1, X2, Distance, T).
+  html([
+    line(point(X1,Y1,_), point(X2,Y2,_), [], []),
+    \edges(Vs1, Vs2, X1, X2, Distance, T)
+  ]).
 edges(_, _, _, _, _, []) --> [].
 
 
@@ -110,6 +113,9 @@ vertices(Vs, X, R, Distance, [H|T]) -->
     nth0(I, Vs, H),
     Y is Distance * I
   },
-  circle(point(X,Y,_), R, []),
-  vertices(Vs, X, R, Distance, T).
-vertices(_, _, _, _, []) --> "".
+  html([
+    circle(point(X,Y,_), R, [], []),
+    \vertices(Vs, X, R, Distance, T)
+  ]).
+vertices(_, _, _, _, []) --> [].
+

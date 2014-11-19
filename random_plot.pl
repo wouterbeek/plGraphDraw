@@ -23,7 +23,7 @@ Random graph plotting.
 
 :- use_module(plSvg(svg_dcg)).
 
-:- use_module(plGraphDraw(graph/plot_generics)).
+:- use_module(plGraphDraw(plot_generics)).
 
 :- predicate_options(random_plot/2, 2, [
      pass_to(surface_size/2, 2)
@@ -36,16 +36,16 @@ Random graph plotting.
 
 %! random_plot(+Graph:ugraph, +Options:list(nvpair))// .
 
-random_plot(G, Options) -->
+random_plot(Graph, Options) -->
   {
     surface_size(Width-Height, Options),
-    R = 0.5,
-    vertices(G, Vs)
+    Radius = 0.5,
+    vertices(Graph, Vs)
   },
   html(
     svg(
       [height=Height,version='1.1',width=Width],
-      [\random_plot_vertices(Width-Height, R, Vs)]
+      [\random_plot_vertices(Width-Height, Radius, Vs)]
     )
   ).
 
@@ -56,13 +56,15 @@ random_plot(G, Options) -->
 %!   +Vertices:list
 %! )// .
 
-random_plot_vertices(Width-Height, R, [H|T]) -->
+random_plot_vertices(Width-Height, Radius, [V|Vs]) -->
   {
     random_point([Width,Height], [X,Y]),
-    with_output_to(atom(HId), write_canonical(H))
+    with_output_to(atom(VId), write_canonical(V))
   },
-  circle(point(X,Y,_), R, [id=HId]),
-  random_plot_vertices(Width-Height, R, T).
+  html([
+    circle(point(X,Y,_), Radius, [id=VId], title([], V)),
+    \random_plot_vertices(Width-Height, Radius, Vs)
+  ]).
 random_plot_vertices(_, _, []) --> [].
 
 
