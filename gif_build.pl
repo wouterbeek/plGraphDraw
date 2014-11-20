@@ -129,7 +129,7 @@ build_gif(Es, Gif, Options):-
 
 build_gif(Vs, Es, graph(VTerms,ETerms,GAttrs), Options1):-
   meta_options(is_meta, Options1, Options2),
-  
+
   % Vertex terms.
   maplist(vertex_term0(Vs, Options2), Vs, VTerms),
 
@@ -273,32 +273,34 @@ vertex_term(Vs, V, vertex(Id,V,VAttrs), Options):-
   if_option(vertex_color(ColorFunction), Options,
     call(ColorFunction, V, VColor)
   ),
-  
+
   % Image.
-  if_option(vertex_image(ImageFunction), Options,
-    call(ImageFunction, V, VImage)
+  ignore(
+    if_option(vertex_image(ImageFunction), Options,
+      call(ImageFunction, V, VImage)
+    )
   ),
-  
+
   % Label.
   if_option(vertex_label(LabelFunction), Options,
     call(LabelFunction, V, VLabel)
   ),
-  
+
   % Peripheries.
   if_option(vertex_peripheries(PeripheriesFunction), Options,
     call(PeripheriesFunction, V, VPeripheries)
   ),
-  
+
   % Position.
   if_option(vertex_position(PositionFunction), Options,
     call(PositionFunction, Vs, Options, V, VPosition)
   ),
-  
+
   % Shape.
   if_option(vertex_shape(ShapeFunction), Options,
     call(ShapeFunction, V, VShape)
   ),
-  
+
   merge_options(
     [
       color=VColor,
