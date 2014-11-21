@@ -144,6 +144,7 @@ edge_term0(Vs, Options, E, ETerm):-
   edge_term(Vs, E, ETerm, Options).
 
 
+
 %! edge_term(
 %!   +Vertices:ordset,
 %!   +Edge:pair,
@@ -186,6 +187,7 @@ edge_term(Vs, E, edge(FromId,ToId,EAttrs), Options):-
     [arrowhead=EArrowhead,color=EColor,label=ELabel,style=EStyle],
     EAttrs
   ).
+
 
 
 %! graph_attributes(
@@ -239,6 +241,7 @@ graph_attributes(GAttrs, Options):-
     ],
     GAttrs
   ).
+
 
 
 %! vertex_term(
