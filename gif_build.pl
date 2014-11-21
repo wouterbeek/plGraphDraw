@@ -1,11 +1,7 @@
 :- module(
   gif_build,
   [
-    build_gif/3, % +Edges:ordset
-                 % -Gif:compound
-                 % +Options:list(nvpair)
-    build_gif/4 % +Vertices:ordset
-                % +Edges:ordset
+    build_gif/3 % +Edges:ordset
                 % -Gif:compound
                 % +Options:list(nvpair)
   ]
@@ -67,9 +63,6 @@ Vertex coordinates:
 :- use_module(plGraph(graph_srep)).
 
 :- predicate_options(build_gif/3, 3, [
-     pass_to(build_gif/4, 4)
-   ]).
-:- predicate_options(build_gif/4, 4, [
      pass_to(edge_term/3, 3),
      pass_to(graph_attributes/2, 2),
      pass_to(vertex_term/3, 3)
@@ -99,7 +92,6 @@ Vertex coordinates:
    ]).
 
 :- meta_predicate(build_gif(+,-,:)).
-:- meta_predicate(build_gif(+,+,-,:)).
 
 is_meta(edge_arrowhead).
 is_meta(edge_color).
@@ -117,19 +109,10 @@ is_meta(vertex_shape).
 %! build_gif(+Edges:ordset, -Gif:compound, +Options:list(nvpair)) is det.
 
 build_gif(Es, Gif, Options):-
-  edges_to_vertices(Es, Vs),
-  build_gif(Vs, Es, Gif, Options).
-
-%! build_gif(
-%!   +Vertices:ordset,
-%!   +Edges:ordset,
-%!   -Gif:compound,
-%!   +Options:list(nvpair)
-%! ) is det.
-
-build_gif(Vs, Es, graph(VTerms,ETerms,GAttrs), Options1):-
   meta_options(is_meta, Options1, Options2),
-
+  
+  edges_to_vertices(Es, Vs),
+  
   % Vertex terms.
   maplist(vertex_term0(Vs, Options2), Vs, VTerms),
 
