@@ -1,7 +1,12 @@
 plGraphDraw
 ===========
 
-Simplified graph drawing in Prolog.
+Simplified graph drawing in Prolog build on top of library
+ [plGraphViz](https://github.com/wouterbeek/plGraphViz)
+ that exports Prolog representations of graphs to GraphViz.
+
+The library allows such Prolog representations to be easily generated
+ with hooks for often-used attributes.
 
 ---
 
