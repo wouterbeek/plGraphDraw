@@ -25,7 +25,7 @@ A randomized graph is generated and exported to file
 
 An example of such a random drawing:
 
-![](https://raw.githubusercontent.com/wouterbeek/plGraphViz/master/example.png "Example graph.")
+![](https://raw.githubusercontent.com/wouterbeek/plGraphDraw/master/example.png "Example graph.")
 
 ---
 
