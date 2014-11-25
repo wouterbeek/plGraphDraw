@@ -1,7 +1,7 @@
 :- module(
-  gif_to_svg,
+  graph_to_svg,
   [
-    gif_to_svg//1 % +Gif:compound
+    graph_to_svg//1 % +Graph:compound
   ]
 ).
 
@@ -40,11 +40,11 @@ edge(Vs, edge(FromVId,ToVId,EAttrs)) -->
     nth0(ToVId, Vs, ToV),
 
     % X1 and Y1.
-    nth0(FromVId, Vs, vertex(FromVId,_,FromVAttrs)),
+    nth0(FromVId, Vs, vertex(FromVId,FromVAttrs)),
     option(pos(point(X1,Y1,_)), FromVAttrs),
 
     % X2 and Y2.
-    nth0(ToVId, Vs, vertex(ToVId,_,ToVAttrs)),
+    nth0(ToVId, Vs, vertex(ToVId,ToVAttrs)),
     option(pos(point(X2,Y2,_)), ToVAttrs),
 
     % Name.
@@ -70,13 +70,13 @@ edges(Vs, [H|T]) --> edge(Vs, H), edges(Vs, T).
 
 
 
-%! gif_to_svg(+Gif:compound)// .
+%! graph_to_svg(+Graph:compound)// .
 % Writes a graph in GIF representation as SVG markup.
 %
 % @tbd Add support for ranks.
 % @tbd Use graph name.
 
-gif_to_svg(graph(Vs,_,Es,GAttrs)) -->
+graph_to_svg(graph(Vs,Es,GAttrs)) -->
   {
     % Graph name.
     option(label(GName), GAttrs, nolabel),
@@ -97,7 +97,7 @@ gif_to_svg(graph(Vs,_,Es,GAttrs)) -->
 
 %! vertex(+Vertices:ordset, +VertexTerm:compound)// .
 
-vertex(Vs, vertex(VId,_,VAttrs)) -->
+vertex(Vs, vertex(VId,VAttrs)) -->
   {
     % Id.
     nth0(VId, Vs, _),

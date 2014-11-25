@@ -1,17 +1,17 @@
 :- module(
-  gif_build,
+  graph_build,
   [
-    build_gif/3, % +Edges:ordset
-                 % -Gif:compound
-                 % +Options:list(nvpair)
-    build_gif/4 % +Vertices:ordset
-                % +Edges:ordset
-                % -Gif:compound
-                % +Options:list(nvpair)
+    build_graph/3, % +Edges:ordset
+                   % -Graph:compound
+                   % +Options:list(nvpair)
+    build_graph/4 % +Vertices:ordset
+                  % +Edges:ordset
+                  % -Graph:compound
+                  % +Options:list(nvpair)
   ]
 ).
 
-/** <module> GraphViz Graph Interchange Format (GIF) build
+/** <module> Build graph representation for export
 
 Support for building GIF representations.
 
@@ -66,10 +66,10 @@ Vertex coordinates:
 :- use_module(plGraph(graph_edge)).
 :- use_module(plGraph(graph_srep)).
 
-:- predicate_options(build_gif/3, 3, [
-     pass_to(build_gif/4, 4)
+:- predicate_options(build_graph/3, 3, [
+     pass_to(build_graph/4, 4)
    ]).
-:- predicate_options(build_gif/4, 4, [
+:- predicate_options(build_graph/4, 4, [
      pass_to(edge_term/3, 3),
      pass_to(graph_attributes/2, 2),
      pass_to(vertex_term/3, 3)
@@ -98,8 +98,8 @@ Vertex coordinates:
      vertex_shape(+callable)
    ]).
 
-:- meta_predicate(build_gif(+,-,:)).
-:- meta_predicate(build_gif(+,+,-,:)).
+:- meta_predicate(build_graph(+,-,:)).
+:- meta_predicate(build_graph(+,+,-,:)).
 
 is_meta(edge_arrowhead).
 is_meta(edge_color).
@@ -116,26 +116,26 @@ is_meta(vertex_shape).
 
 
 
-%! build_gif(
+%! build_graph(
 %!   +Edges:ordset(pair),
-%!   -Gif:compound,
+%!   -Graph:compound,
 %!   +Options:list(nvpair)
 %! ) is det.
 
-build_gif(Es, Gif, Options):-
+build_graph(Es, Graph, Options):-
   edges_to_vertices(Es, Vs),
-  build_gif(Vs, Es, Gif, Options).
+  build_graph(Vs, Es, Graph, Options).
 
 
 
-%! build_gif(
+%! build_graph(
 %!   +Vertices:ordset,
 %!   +Edges:ordset(pair),
-%!   -Gif:compound,
+%!   -Graph:compound,
 %!   +Options:list(nvpair)
 %! ) is det.
 
-build_gif(Vs, Es, graph(VTerms,ETerms,GAttrs), Options1):-
+build_graph(Vs, Es, graph(VTerms,ETerms,GAttrs), Options1):-
   meta_options(is_meta, Options1, Options2),
 
   % Vertex terms.
@@ -277,7 +277,7 @@ graph_attributes(GAttrs, Options):-
 %      A function that assinges shapes to vertices.
 %      No default.
 
-vertex_term(Vs, V, vertex(Id,V,VAttrs), Options):-
+vertex_term(Vs, V, vertex(Id,VAttrs), Options):-
   nth0chk(Id, Vs, V),
 
   % Color.

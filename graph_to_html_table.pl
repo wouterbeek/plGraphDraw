@@ -1,12 +1,12 @@
 :- module(
-  gif_to_html_table,
+  graph_to_html_table,
   [
-    gif_to_html_table//2 % +Gif:compound
-                         % +Options:list(nvpair)
+    graph_to_html_table//2 % +Graph:compound
+                           % +Options:list(nvpair)
   ]
 ).
 
-/** <module> HTML: GIF table
+/** <module> HTML: Graph table
 
 Generate HTML tables representing graphs using the GIF representation.
 
@@ -30,7 +30,7 @@ Generate HTML tables representing graphs using the GIF representation.
 :- use_module(plHtml(html_dcg)).
 :- use_module(plHtml(html_table)).
 
-:- predicate_options(gif_to_html_table//2, 2, [
+:- predicate_options(graph_to_html_table//2, 2, [
      border_width(+boolean),
      include_edges(+boolean),
      pass_to(html_table//3, 3)
@@ -38,9 +38,9 @@ Generate HTML tables representing graphs using the GIF representation.
 
 
 
-%! gif_to_html_table(+Gif:compound, +Options:list(nvpair))// is det.
+%! graph_to_html_table(+Graph:compound, +Options:list(nvpair))// is det.
 
-gif_to_html_table(graph(VTerms,_,ETerms,GAttrs), Options1) -->
+graph_to_html_table(graph(_,ETerms,GAttrs), Options1) -->
   {
     % Create the header row and data rows.
     % Decide whether edge labels are included or not.
@@ -61,7 +61,7 @@ gif_to_html_table(graph(VTerms,_,ETerms,GAttrs), Options1) -->
   },
   html_table(
     html(['Table representing graph ',GName,'.']),
-    gif_cell(VTerms, Options2),
+    graph_cell(Options2),
     [HeaderRow|DataRows],
     Options2
   ).
@@ -76,33 +76,25 @@ edge_row(true, edge(From,To,_), [From,To]).
 
 
 
-%! gif_cell(
-%!   +VTerms:list(compound),
-%!   +Options:list(nvpair),
-%!   +ETerm:compound
-%! ) is det.
+%! graph_cell(+Options:list(nvpair), +EdgeTerm:compound) is det.
 
-gif_cell(VTerms, Options, edge(FromId,ToId,_)) -->
+graph_cell(Options, edge(FromId,ToId,_)) -->
   {
-    nth0chk(FromId, VTerms, vertex(FromId,From,_)),
-    nth0chk(ToId, VTerms, vertex(ToId,To,_)),
-    edge_components(E, From, To),
-    
     % Color.
     (   option(edge_color(ColorFunction), Options)
-    ->  call(ColorFunction, E, EColor)
+    ->  call(ColorFunction, FromId-ToId, EColor)
     ;   EColor = black
     ),
     dcg_phrase(html_style(color-EColor), Style),
     
     % Label.
     (   option(edge_label(LabelFunction), Options)
-    ->  call(LabelFunction, E, ELabel)
+    ->  call(LabelFunction, FromId-ToId, ELabel)
     ;   with_output_to(atom(ELabel), write_canonical_blobs(E))
     )
   },
   html(div([class=edge,syle=Style], ELabel)).
-gif_cell(_, Options, vertex(_,V,_)) -->
+graph_cell(Options, vertex(_,V,_)) -->
   {
     % Color.
     (   option(vertex_color(ColorFunction), Options)
