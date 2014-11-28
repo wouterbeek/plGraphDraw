@@ -1,13 +1,13 @@
 :- module(
-  graph_build,
+  build_export_graph,
   [
-    build_graph/3, % +Edges:ordset
-                   % -Graph:compound
-                   % +Options:list(nvpair)
-    build_graph/4 % +Vertices:ordset
-                  % +Edges:ordset
-                  % -Graph:compound
-                  % +Options:list(nvpair)
+    build_export_graph/3, % +Edges:ordset
+                          % -ExportGraph:compound
+                          % +Options:list(nvpair)
+    build_export_graph/4 % +Vertices:ordset
+                         % +Edges:ordset
+                         % -ExportGraph:compound
+                         % +Options:list(nvpair)
   ]
 ).
 
@@ -66,10 +66,10 @@ Vertex coordinates:
 :- use_module(plGraph(graph_edge)).
 :- use_module(plGraph(graph_srep)).
 
-:- predicate_options(build_graph/3, 3, [
-     pass_to(build_graph/4, 4)
+:- predicate_options(build_export_graph/3, 3, [
+     pass_to(build_export_graph/4, 4)
    ]).
-:- predicate_options(build_graph/4, 4, [
+:- predicate_options(build_export_graph/4, 4, [
      pass_to(edge_term/3, 3),
      pass_to(graph_attributes/2, 2),
      pass_to(vertex_term/3, 3)
@@ -98,8 +98,8 @@ Vertex coordinates:
      vertex_shape(+callable)
    ]).
 
-:- meta_predicate(build_graph(+,-,:)).
-:- meta_predicate(build_graph(+,+,-,:)).
+:- meta_predicate(build_export_graph(+,-,:)).
+:- meta_predicate(build_export_graph(+,+,-,:)).
 
 is_meta(edge_arrowhead).
 is_meta(edge_color).
@@ -116,26 +116,26 @@ is_meta(vertex_shape).
 
 
 
-%! build_graph(
+%! build_export_graph(
 %!   +Edges:ordset(pair),
-%!   -Graph:compound,
+%!   -ExportGraph:compound,
 %!   +Options:list(nvpair)
 %! ) is det.
 
-build_graph(Es, Graph, Options):-
+build_export_graph(Es, Export, Options):-
   edges_to_vertices(Es, Vs),
-  build_graph(Vs, Es, Graph, Options).
+  build_export_graph(Vs, Es, Export, Options).
 
 
 
-%! build_graph(
+%! build_export_graph(
 %!   +Vertices:ordset,
 %!   +Edges:ordset(pair),
-%!   -Graph:compound,
+%!   -ExportGraph:compound,
 %!   +Options:list(nvpair)
 %! ) is det.
 
-build_graph(Vs, Es, graph(VTerms,ETerms,GAttrs), Options1):-
+build_export_graph(Vs, Es, graph(VTerms,ETerms,GAttrs), Options1):-
   meta_options(is_meta, Options1, Options2),
 
   % Vertex terms.

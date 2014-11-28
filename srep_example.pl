@@ -11,7 +11,7 @@
 
 :- use_module(plGraphViz(gv_file)).
 
-:- use_module(plGraphDraw(graph_build)).
+:- use_module(plGraphDraw(build_export_graph)).
 
 :- initialization(srep_example).
 
@@ -28,5 +28,5 @@ srep_example(N):-
     ),
     Edges
   ),
-  build_graph(Edges, Graph, []),
-  graph_to_gv_file(Graph, _, []).
+  build_export_graph(Edges, ExportGraph, []),
+  export_graph_to_gv_file(ExportGraph, _, []).

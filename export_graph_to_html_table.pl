@@ -1,12 +1,12 @@
 :- module(
-  graph_to_html_table,
+  export_graph_to_html_table,
   [
-    graph_to_html_table//2 % +Graph:compound
-                           % +Options:list(nvpair)
+    export_graph_to_html_table//2 % +ExportGraph:compound
+                                  % +Options:list(nvpair)
   ]
 ).
 
-/** <module> HTML: Graph table
+/** <module> Export graphs as HTML tables
 
 Generate HTML tables representing graphs using the GIF representation.
 
@@ -30,7 +30,7 @@ Generate HTML tables representing graphs using the GIF representation.
 :- use_module(plHtml(html_dcg)).
 :- use_module(plHtml(html_table)).
 
-:- predicate_options(graph_to_html_table//2, 2, [
+:- predicate_options(export_graph_to_html_table//2, 2, [
      border_width(+boolean),
      include_edges(+boolean),
      pass_to(html_table//3, 3)
@@ -38,9 +38,14 @@ Generate HTML tables representing graphs using the GIF representation.
 
 
 
-%! graph_to_html_table(+Graph:compound, +Options:list(nvpair))// is det.
 
-graph_to_html_table(graph(_,ETerms,GAttrs), Options1) -->
+
+%! export_graph_to_html_table(
+%!   +ExportGraph:compound,
+%!   +Options:list(nvpair)
+%! )// is det.
+
+export_graph_to_html_table(graph(_,ETerms,GAttrs), Options1) -->
   {
     % Create the header row and data rows.
     % Decide whether edge labels are included or not.
@@ -90,7 +95,7 @@ graph_cell(Options, edge(FromId,ToId,_)) -->
     % Label.
     (   option(edge_label(LabelFunction), Options)
     ->  call(LabelFunction, FromId-ToId, ELabel)
-    ;   with_output_to(atom(ELabel), write_canonical_blobs(E))
+    ;   with_output_to(atom(ELabel), write_canonical_blobs(FromId-ToId))
     )
   },
   html(div([class=edge,syle=Style], ELabel)).

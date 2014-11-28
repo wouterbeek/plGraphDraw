@@ -1,7 +1,7 @@
 :- module(
-  graph_to_svg,
+  export_graph_to_svg,
   [
-    graph_to_svg//1 % +Graph:compound
+    export_graph_to_svg//1 % +Graph:compound
   ]
 ).
 
@@ -70,13 +70,13 @@ edges(Vs, [H|T]) --> edge(Vs, H), edges(Vs, T).
 
 
 
-%! graph_to_svg(+Graph:compound)// .
+%! export_graph_to_svg(+Graph:compound)// .
 % Writes a graph in GIF representation as SVG markup.
 %
 % @tbd Add support for ranks.
 % @tbd Use graph name.
 
-graph_to_svg(graph(Vs,Es,GAttrs)) -->
+export_graph_to_svg(graph(Vs,Es,GAttrs)) -->
   {
     % Graph name.
     option(label(GName), GAttrs, nolabel),
