@@ -103,9 +103,9 @@ vertices(_, _, [], _) --> [].
 % graph are plotted on a circle.
 %
 % `Point` is a compound term of the following form:
-% ~~~{.pl}
+% ```prolog
 % point(X:float,Y:float,Changeable:boolean)
-% ~~~
+% ```
 %
 % The following options are supported:
 %   * =|surface_size(+pair(float))|=

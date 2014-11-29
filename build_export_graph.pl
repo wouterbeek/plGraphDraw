@@ -19,27 +19,27 @@ Support for building GIF representations.
 
 ## Graph
 
-~~~{.pl}
+```prolog
 graph(Vertices:ordset(compound),Ranks,Edges:compound,Attributes:list(nvpair))
-~~~
+```
 
 ### Edge
 
-~~~{.pl}
+```prolog
 edge(FromVertexId,ToVertexId,Attributes:list(nvpair))
-~~~
+```
 
 ### Rank
 
-~~~{.pl}
+```prolog
 rank(RankVertex:compound,ContentVertices:ordset(compound))
-~~~
+```
 
 ### Vertex
 
-~~~{.pl}
+```prolog
 vertex(Id,Attributes:list(nvpair))
-~~~
+```
 
 # Property functions
 
