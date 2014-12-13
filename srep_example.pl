@@ -20,7 +20,7 @@ srep_example:-
 
 srep_example(N):-
   aggregate_all(
-    set(From-To),
+    set(edge(From,_,To)),
     (
       between(1, N, _),
       random_between(1, N, From),

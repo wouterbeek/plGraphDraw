@@ -1,11 +1,11 @@
 :- module(
   build_export_graph,
   [
-    build_export_graph/3, % +Edges:ordset
+    build_export_graph/3, % +Edges:ordset(compound)
                           % -ExportGraph:compound
                           % +Options:list(nvpair)
     build_export_graph/4 % +Vertices:ordset
-                         % +Edges:ordset
+                         % +Edges:ordset(compound)
                          % -ExportGraph:compound
                          % +Options:list(nvpair)
   ]
@@ -117,7 +117,7 @@ is_meta(vertex_shape).
 
 
 %! build_export_graph(
-%!   +Edges:ordset(pair),
+%!   +Edges:ordset(compound),
 %!   -ExportGraph:compound,
 %!   +Options:list(nvpair)
 %! ) is det.
@@ -130,7 +130,7 @@ build_export_graph(Es, Export, Options):-
 
 %! build_export_graph(
 %!   +Vertices:ordset,
-%!   +Edges:ordset(pair),
+%!   +Edges:ordset(compound),
 %!   -ExportGraph:compound,
 %!   +Options:list(nvpair)
 %! ) is det.
@@ -146,8 +146,10 @@ build_export_graph(Vs, Es, graph(VTerms,ETerms,GAttrs), Options1):-
 
   % Graph attributes.
   graph_attributes(GAttrs, Options2).
+
 vertex_term0(Vs, Options, V, VTerm):-
   vertex_term(Vs, V, VTerm, Options).
+
 edge_term0(Vs, Options, E, ETerm):-
   edge_term(Vs, E, ETerm, Options).
 
@@ -155,7 +157,7 @@ edge_term0(Vs, Options, E, ETerm):-
 
 %! edge_term(
 %!   +Vertices:ordset,
-%!   +Edge:pair,
+%!   +Edge:compound,
 %!   -EdgeTerm:compound,
 %!   +Options:list(nvpair)
 %! ) is det.
@@ -170,10 +172,10 @@ edge_term0(Vs, Options, E, ETerm):-
 %     No default.
 
 edge_term(Vs, E, edge(FromId,ToId,EAttrs), Options):-
-  edge_components(E, FromV, ToV),
+  E = edge(FromV,_,ToV),
   nth0chk(FromId, Vs, FromV),
   nth0chk(ToId, Vs, ToV),
-  
+
   % Arrowhead
   if_option(edge_arrowhead(ArrowheadFunction), Options,
     call(ArrowheadFunction, E, EArrowhead)
