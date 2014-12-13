@@ -160,20 +160,20 @@ edge_term0(Vs, Options, E, ETerm):-
 %!   +Options:list(nvpair)
 %! ) is det.
 % The following options are supported:
-%   1. =|edge_arrowhead(+atom)|=
-%      No default.
-%   2. =|edge_color(+atom)|=
-%      No default.
-%   3. =|edge_label(+atom)|=
-%      No default.
-%   4. =|edge_style(+atom)|=
-%      No default.
+%   - `edge_arrowhead(+atom)`
+%     No default.
+%   - `edge_color(+atom)`
+%     No default.
+%   - `edge_label(+atom)`
+%     No default.
+%   - `edge_style(+atom)`
+%     No default.
 
 edge_term(Vs, E, edge(FromId,ToId,EAttrs), Options):-
   edge_components(E, FromV, ToV),
   nth0chk(FromId, Vs, FromV),
   nth0chk(ToId, Vs, ToV),
-
+  
   % Arrowhead
   if_option(edge_arrowhead(ArrowheadFunction), Options,
     call(ArrowheadFunction, E, EArrowhead)
@@ -203,24 +203,24 @@ edge_term(Vs, E, edge(FromId,ToId,EAttrs), Options):-
 %!   +Options:list(nvpair)
 %! ) is det.
 % The following options are supported:
-%   1. =|graph_charset(+oneof(['iso-8859-1','Latin1','UTF-8']))|=
-%      The name of the character set that is used to encode text in the graph.
-%      Default: `UTF-8`.
-%   2. =|graph_colorscheme(+oneof([none,svg,x11]))|=
-%      The colorscheme from which the color in this graph are taken.
-%      Default: `svg`.
-%   3. =|graph_directed(+boolean)|=
-%      Whether the graph is directed (`true`) or undirected (`false`).
-%      Default: `false`.
-%   4. =|graph_fontsize(+float)|=
-%      The font size of text in the graph.
-%      Default: `11.0`.
-%   5. =|graph_label(+callable)|=
-%      The graph label.
-%      No default.
-%   6. =|graph_overlap(+boolean)|=
-%      Whether the vertices are allowed to overlap.
-%      Default: `false`.
+%   - `graph_charset(+oneof(['iso-8859-1','Latin1','UTF-8']))`
+%     The name of the character set that is used to encode text in the graph.
+%     Default: `UTF-8`.
+%   - `graph_colorscheme(+oneof([none,svg,x11]))`
+%     The colorscheme from which the color in this graph are taken.
+%     Default: `svg`.
+%   - `graph_directed(+boolean)`
+%     Whether the graph is directed (`true`) or undirected (`false`).
+%     Default: `false`.
+%   - `graph_fontsize(+float)`
+%     The font size of text in the graph.
+%     Default: `11.0`.
+%   - `graph_label(+callable)`
+%     The graph label.
+%     No default.
+%   - `graph_overlap(+boolean)`
+%     Whether the vertices are allowed to overlap.
+%     Default: `false`.
 
 graph_attributes(GAttrs, Options):-
   % Characer set.
@@ -259,23 +259,23 @@ graph_attributes(GAttrs, Options):-
 %!   +Options:list(nvpair)
 %! ) is det.
 % The following options are supported:
-%   1. =|vertex_color(:ColorFunction)|=
-%      A function that assigns colors to vertices.
-%      No default.
-%   2. =|vertex_image(:ImageFunction)|=
-%      A function that assinges images to vertices.
-%      No default.
-%   3. =|vertex_label(:LabelFunction)|=
-%      A function that assigns labels to vertices.
-%      No default.
-%   4. =|vertex_peripheries(:PeripheriesFunction)|=
-%      A function that assinges peripheries to vertices.
-%      No default.
-%   5. =|vertex_position(:PositionFunction)|=
-%      No default.
-%   6. =|vertex_shape(:ShapeFunction)|=
-%      A function that assinges shapes to vertices.
-%      No default.
+%   - `vertex_color(:ColorFunction)`
+%     A function that assigns colors to vertices.
+%     No default.
+%   - `vertex_image(:ImageFunction)`
+%     A function that assinges images to vertices.
+%     No default.
+%   - `vertex_label(:LabelFunction)`
+%     A function that assigns labels to vertices.
+%     No default.
+%   - `vertex_peripheries(:PeripheriesFunction)`
+%     A function that assinges peripheries to vertices.
+%     No default.
+%   - `vertex_position(:PositionFunction)`
+%     No default.
+%   - `vertex_shape(:ShapeFunction)`
+%     A function that assinges shapes to vertices.
+%     No default.
 
 vertex_term(Vs, V, vertex(Id,VAttrs), Options):-
   nth0chk(Id, Vs, V),
