@@ -36,7 +36,7 @@ Bipartite graph plotting.
 
 bipartite_plot(G, Options) -->
   {
-    bipartite(G, Vs1, Vs2),
+    s_bipartite(G, Vs1, Vs2),
     
     % Global parameters.
     surface_size(Width-Height, Options),

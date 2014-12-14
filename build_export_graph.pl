@@ -64,7 +64,7 @@ Vertex coordinates:
 :- use_module(generics(option_ext)).
 
 :- use_module(plGraph(graph_edge)).
-:- use_module(plGraph(graph_srep)).
+:- use_module(plGraph(s_graph/s_graph)).
 
 :- predicate_options(build_export_graph/3, 3, [
      pass_to(build_export_graph/4, 4)
