@@ -60,8 +60,8 @@ Vertex coordinates:
 :- use_module(generics(list_ext)).
 :- use_module(generics(option_ext)).
 
-:- use_module(plGraph(graph_edge)).
 :- use_module(plGraph(s_graph/s_graph)).
+:- use_module(plGraph(s_graph/s_graph_edge)).
 
 :- predicate_options(build_export_graph/4, 4, [
      pass_to(edge_term/3, 3),
