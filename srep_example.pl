@@ -3,11 +3,13 @@
 /** <module> S-representation example
 
 @author Wouter Beek
-@version 2014/11
+@version 2014/11-2014/12
 */
 
 :- use_module(library(aggregate)).
 :- use_module(library(random)).
+
+:- use_module(plGraph(s_graph/s_graph)).
 
 :- use_module(plGraphViz(gv_file)).
 
@@ -20,13 +22,14 @@ srep_example:-
 
 srep_example(N):-
   aggregate_all(
-    set(edge(From,_,To)),
+    set(V-W),
     (
       between(1, N, _),
-      random_between(1, N, From),
-      random_between(1, N, To)
+      random_between(1, N, V),
+      random_between(1, N, W)
     ),
-    Edges
+    Es
   ),
-  build_export_graph(Edges, ExportGraph, []),
-  export_graph_to_gv_file(ExportGraph, _, []).
+  s_edges_vertices(Es, Vs),
+  build_export_graph(Vs, Es, ExportG, []),
+  export_graph_to_gv_file(ExportG, _, []).

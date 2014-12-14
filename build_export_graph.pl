@@ -1,12 +1,9 @@
 :- module(
   build_export_graph,
   [
-    build_export_graph/3, % +Edges:ordset(compound)
-                          % -ExportGraph:compound
-                          % +Options:list(nvpair)
-    build_export_graph/4 % +Vertices:ordset
-                         % +Edges:ordset(compound)
-                         % -ExportGraph:compound
+    build_export_graph/4 % +Vs:ordset
+                         % +Es:ordset(compound)
+                         % -ExportG:compound
                          % +Options:list(nvpair)
   ]
 ).
@@ -20,7 +17,7 @@ Support for building GIF representations.
 ## Graph
 
 ```prolog
-graph(Vertices:ordset(compound),Ranks,Edges:compound,Attributes:list(nvpair))
+graph(Vs:ordset(compound),Ranks,Es:compound,Attributes:list(nvpair))
 ```
 
 ### Edge
@@ -53,7 +50,7 @@ Vertex coordinates:
 ---
 
 @author Wouter Beek
-@version 2014/06-2014/07, 2014/10-2014/11
+@version 2014/06-2014/07, 2014/10-2014/12
 */
 
 :- use_module(library(apply)).
@@ -66,9 +63,6 @@ Vertex coordinates:
 :- use_module(plGraph(graph_edge)).
 :- use_module(plGraph(s_graph/s_graph)).
 
-:- predicate_options(build_export_graph/3, 3, [
-     pass_to(build_export_graph/4, 4)
-   ]).
 :- predicate_options(build_export_graph/4, 4, [
      pass_to(edge_term/3, 3),
      pass_to(graph_attributes/2, 2),
@@ -98,7 +92,6 @@ Vertex coordinates:
      vertex_shape(+callable)
    ]).
 
-:- meta_predicate(build_export_graph(+,-,:)).
 :- meta_predicate(build_export_graph(+,+,-,:)).
 
 is_meta(edge_arrowhead).
@@ -117,28 +110,16 @@ is_meta(vertex_shape).
 
 
 %! build_export_graph(
-%!   +Edges:ordset(compound),
-%!   -ExportGraph:compound,
-%!   +Options:list(nvpair)
-%! ) is det.
-
-build_export_graph(Es, Export, Options):-
-  edges_to_vertices(Es, Vs),
-  build_export_graph(Vs, Es, Export, Options).
-
-
-
-%! build_export_graph(
-%!   +Vertices:ordset,
-%!   +Edges:ordset(compound),
-%!   -ExportGraph:compound,
+%!   +Vs:ordset,
+%!   +Es:ordset,
+%!   -ExportG:compound,
 %!   +Options:list(nvpair)
 %! ) is det.
 
 build_export_graph(Vs, Es, graph(VTerms,ETerms,GAttrs), Options1):-
   meta_options(is_meta, Options1, Options2),
 
-  % Vertex terms.
+  % V terms.
   maplist(vertex_term0(Vs, Options2), Vs, VTerms),
 
   % Edge terms.
@@ -155,12 +136,7 @@ edge_term0(Vs, Options, E, ETerm):-
 
 
 
-%! edge_term(
-%!   +Vertices:ordset,
-%!   +Edge:compound,
-%!   -EdgeTerm:compound,
-%!   +Options:list(nvpair)
-%! ) is det.
+%! edge_term(+Vs:ordset, +E, -ETerm:compound, +Options:list(nvpair)) is det.
 % The following options are supported:
 %   - `edge_arrowhead(+atom)`
 %     No default.
@@ -200,10 +176,7 @@ edge_term(Vs, E, edge(FromId,ToId,EAttrs), Options):-
 
 
 
-%! graph_attributes(
-%!   -GraphAttributes:list(nvpair),
-%!   +Options:list(nvpair)
-%! ) is det.
+%! graph_attributes(-GAttrs:list(nvpair), +Options:list(nvpair)) is det.
 % The following options are supported:
 %   - `graph_charset(+oneof(['iso-8859-1','Latin1','UTF-8']))`
 %     The name of the character set that is used to encode text in the graph.
@@ -254,12 +227,7 @@ graph_attributes(GAttrs, Options):-
 
 
 
-%! vertex_term(
-%!   +Vertices:ordset,
-%!   +Vertex,
-%!   -VertexTerm:compound,
-%!   +Options:list(nvpair)
-%! ) is det.
+%! vertex_term(+Vs:ordset, +V, -VTerm:compound, +Options:list(nvpair)) is det.
 % The following options are supported:
 %   - `vertex_color(:ColorFunction)`
 %     A function that assigns colors to vertices.

@@ -13,7 +13,7 @@
 Bipartite graph plotting.
 
 @author Wouter Beek
-@version 2014/11
+@version 2014/11-2014/12
 */
 
 :- use_module(library(http/html_write)).
@@ -21,6 +21,7 @@ Bipartite graph plotting.
 
 :- use_module(plGraph(graph_edge)).
 :- use_module(plGraph(graph_type)).
+:- use_module(plGraph(s_graph/s_graph)).
 
 :- use_module(plSvg(svg_dcg)).
 
