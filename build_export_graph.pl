@@ -71,6 +71,7 @@ Vertex coordinates:
 :- predicate_options(edge_term/3, 3, [
      edge_arrowhead(+callable),
      edge_color(+callable),
+     edge_id(+callable),
      edge_label(+callable),
      edge_style(+callable)
    ]).
@@ -85,6 +86,7 @@ Vertex coordinates:
 
 :- predicate_options(vertex_term/3, 3, [
      vertex_color(+callable),
+     vertex_id(+callable),
      vertex_image(+callable),
      vertex_label(+callable),
      vertex_peripheries(+callable),
@@ -96,9 +98,11 @@ Vertex coordinates:
 
 is_meta(edge_arrowhead).
 is_meta(edge_color).
+is_meta(edge_id).
 is_meta(edge_label).
 is_meta(edge_style).
 is_meta(vertex_color).
+is_meta(vertex_id).
 is_meta(vertex_image).
 is_meta(vertex_label).
 is_meta(vertex_peripheries).
@@ -138,32 +142,43 @@ edge_term0(Vs, Options, E, ETerm):-
 
 %! edge_term(+Vs:ordset, +E, -ETerm:compound, +Options:list(nvpair)) is det.
 % The following options are supported:
-%   - `edge_arrowhead(+atom)`
+%   - `edge_arrowhead(+callable)`
 %     No default.
-%   - `edge_color(+atom)`
+%   - `edge_color(+callable)`
 %     No default.
-%   - `edge_label(+atom)`
+%   - `edge_id(+callable)`
+%     Function that assignes the unique identifiers for an edge's
+%     incident vertices.
+%   - `edge_label(+callable)`
 %     No default.
-%   - `edge_style(+atom)`
+%   - `edge_style(+callable)`
 %     No default.
 
 edge_term(Vs, E, edge(FromId,ToId,EAttrs), Options):-
-  E = edge(FromV,_,ToV),
-  nth0chk(FromId, Vs, FromV),
-  nth0chk(ToId, Vs, ToV),
-
   % Arrowhead
   if_option(edge_arrowhead(ArrowheadFunction), Options,
     call(ArrowheadFunction, E, EArrowhead)
   ),
+  
   % Color.
   if_option(edge_color(ColorFunction), Options,
     call(ColorFunction, E, EColor)
   ),
+  
+  % Id.
+  (   option(edge_id(IdFunction), Options)
+  ->  call(IdFunction, E, FromId, ToId)
+  ;     E = edge(FromV,_,ToV),
+        nth0chk(FromId, Vs, FromV),
+        nth0chk(ToId, Vs, ToV)
+  ),
+
+  
   % Label.
   if_option(edge_label(LabelFunction), Options,
     call(LabelFunction, E, ELabel)
   ),
+  
   % Style.
   if_option(edge_style(StyleFunction), Options,
     call(StyleFunction, E, EStyle)
@@ -232,8 +247,10 @@ graph_attributes(GAttrs, Options):-
 %   - `vertex_color(:ColorFunction)`
 %     A function that assigns colors to vertices.
 %     No default.
+%   - `vertex_id(:ColorFunction)`
+%     A functions that assigns unique identifiers to vertices.
 %   - `vertex_image(:ImageFunction)`
-%     A function that assinges images to vertices.
+%     A function that assigns images to vertices.
 %     No default.
 %   - `vertex_label(:LabelFunction)`
 %     A function that assigns labels to vertices.
@@ -247,14 +264,18 @@ graph_attributes(GAttrs, Options):-
 %     A function that assinges shapes to vertices.
 %     No default.
 
-vertex_term(Vs, V, vertex(Id,VAttrs), Options):-
-  nth0chk(Id, Vs, V),
-
+vertex_term(Vs, V, vertex(VId,VAttrs), Options):-
   % Color.
   if_option(vertex_color(ColorFunction), Options,
     call(ColorFunction, V, VColor)
   ),
-
+  
+  % Id.
+  (   option(vertex_id(IdFunction), Options)
+  ->  call(IdFunction, V, VId)
+  ;   nth0chk(VId, Vs, V)
+  ),
+  
   % Image.
   ignore(
     if_option(vertex_image(ImageFunction), Options,
