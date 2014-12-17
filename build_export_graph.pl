@@ -91,7 +91,8 @@ Vertex coordinates:
      vertex_label(+callable),
      vertex_peripheries(+callable),
      vertex_position(+callable),
-     vertex_shape(+callable)
+     vertex_shape(+callable),
+     vertex_uri(+callable)
    ]).
 
 :- meta_predicate(build_export_graph(+,+,-,:)).
@@ -108,6 +109,7 @@ is_meta(vertex_label).
 is_meta(vertex_peripheries).
 is_meta(vertex_position).
 is_meta(vertex_shape).
+is_meta(vertex_uri).
 
 
 
@@ -263,6 +265,7 @@ graph_attributes(GAttrs, Options):-
 %   - `vertex_shape(:ShapeFunction)`
 %     A function that assinges shapes to vertices.
 %     No default.
+%   - `vertex_uri(:UriFunction)`
 
 vertex_term(Vs, V, vertex(VId,VAttrs), Options):-
   % Color.
@@ -302,6 +305,11 @@ vertex_term(Vs, V, vertex(VId,VAttrs), Options):-
   if_option(vertex_shape(ShapeFunction), Options,
     call(ShapeFunction, V, VShape)
   ),
+  
+  % URI
+  if_option(vertex_uri(UriFunction), Options,
+    call(UriFunction, V, VUri)
+  ),
 
   merge_options(
     [
@@ -310,7 +318,8 @@ vertex_term(Vs, V, vertex(VId,VAttrs), Options):-
       label=VLabel,
       peripheries=VPeripheries,
       pos=VPosition,
-      shape=VShape
+      shape=VShape,
+      'URL'=VUri
     ],
     VAttrs
   ).
