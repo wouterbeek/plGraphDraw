@@ -15,7 +15,7 @@ Convert from GIF (Graph Interchange Format) to SVG.
 
 :- use_module(library(apply)).
 :- use_module(library(http/html_write)).
-:- use_module(library(lists), except([delete/3])).
+:- use_module(library(lists), except([delete/3,subset/2])).
 :- use_module(library(option)).
 :- use_module(library(settings)).
 

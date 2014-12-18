@@ -17,7 +17,7 @@ Bipartite graph plotting.
 */
 
 :- use_module(library(http/html_write)).
-:- use_module(library(lists), except([delete/3])).
+:- use_module(library(lists), except([delete/3,subset/2])).
 
 :- use_module(plGraph(s_graph/s_graph)).
 :- use_module(plGraph(s_graph/s_graph_edge)).

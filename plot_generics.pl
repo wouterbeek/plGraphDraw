@@ -19,7 +19,7 @@ positions in iterations of spring embedding.
 @version 2014/11
 */
 
-:- use_module(library(lists), except([delete/3])).
+:- use_module(library(lists), except([delete/3,subset/2])).
 :- use_module(library(option)).
 :- use_module(library(settings)).
 
