@@ -200,7 +200,7 @@ edge_term(Vs, E, edge(FromId,ToId,EAttrs), Options):-
 %     Default: `UTF-8`.
 %   - `graph_colorscheme(+oneof([none,svg,x11]))`
 %     The colorscheme from which the color in this graph are taken.
-%     Default: `svg`.
+%     Default: `x11`.
 %   - `graph_directed(+boolean)`
 %     Whether the graph is directed (`true`) or undirected (`false`).
 %     Default: `false`.
@@ -218,7 +218,7 @@ graph_attributes(GAttrs, Options):-
   % Characer set.
   option(graph_charset(Charset), Options, 'UTF-8'),
   % Colorscheme.
-  option(graph_colorscheme(Colorscheme), Options, svg),
+  option(graph_colorscheme(Colorscheme), Options, x11),
   % Directed.
   option(graph_directed(Directed), Options, false),
   % Fontsize.
