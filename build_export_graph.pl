@@ -50,7 +50,7 @@ Vertex coordinates:
 ---
 
 @author Wouter Beek
-@version 2014/06-2014/07, 2014/10-2014/12
+@version 2014/06-2014/07, 2014/10-2015/01
 */
 
 :- use_module(library(apply)).
@@ -73,6 +73,7 @@ Vertex coordinates:
      edge_color(+callable),
      edge_id(+callable),
      edge_label(+callable),
+     edge_penwidth(+callable),
      edge_style(+callable)
    ]).
 :- predicate_options(graph_attributes/2, 2, [
@@ -101,6 +102,7 @@ is_meta(edge_arrowhead).
 is_meta(edge_color).
 is_meta(edge_id).
 is_meta(edge_label).
+is_meta(edge_penwidth).
 is_meta(edge_style).
 is_meta(vertex_color).
 is_meta(vertex_id).
@@ -153,6 +155,8 @@ edge_term0(Vs, Options, E, ETerm):-
 %     incident vertices.
 %   - `edge_label(+callable)`
 %     No default.
+%   - `edge_penwidth(+callable)`
+%     No default.
 %   - `edge_style(+callable)`
 %     No default.
 
@@ -174,11 +178,15 @@ edge_term(Vs, E, edge(FromId,ToId,EAttrs), Options):-
         nth0chk(FromId, Vs, FromV),
         nth0chk(ToId, Vs, ToV)
   ),
-
   
   % Label.
   if_option(edge_label(LabelFunction), Options,
     call(LabelFunction, E, ELabel)
+  ),
+  
+  % Penwidth.
+  if_option(edge_penwidth(PenwidthFunction), Options,
+    call(PenwidthFunction, E, EPenwidth)
   ),
   
   % Style.
@@ -187,7 +195,13 @@ edge_term(Vs, E, edge(FromId,ToId,EAttrs), Options):-
   ),
 
   merge_options(
-    [arrowhead=EArrowhead,color=EColor,label=ELabel,style=EStyle],
+    [
+      arrowhead=EArrowhead,
+      color=EColor,
+      label=ELabel,
+      penwidth=EPenwidth,
+      style=EStyle
+    ],
     EAttrs
   ).
 
