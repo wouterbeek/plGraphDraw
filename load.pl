@@ -2,21 +2,20 @@
 
 :- dynamic(user:project/2).
 :- multifile(user:project/2).
-   user:project(
-     plGraphDraw,
-     'Graph theory library written in SWI-Prolog.'
-   ).
+user:project(
+  plGraphDraw,
+  'Graph theory library written in SWI-Prolog.'
+).
 
 :- use_module(load_project).
 :- load_project([
-     plc-'Prolog-Library-Collection',
-     plDcg,
-     plGraph,
-     plGraphViz,
-     plHtml,
-     plLangTag,
-     plSet,
-     plSvg,
-     plUri,
-     plXml
-   ]).
+  plc-'Prolog-Library-Collection',
+  plGraph,
+  plGraphViz,
+  plHtml,
+  plLangTag,
+  plSet,
+  plSvg,
+  plUri,
+  plXml
+]).

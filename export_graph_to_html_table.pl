@@ -18,23 +18,22 @@ Generate HTML tables representing graphs using the GIF representation.
 :- use_module(library(http/html_write)).
 :- use_module(library(option)).
 
-:- use_module(generics(list_ext)).
-:- use_module(pl(pl_log)).
-
-:- use_module(plDcg(dcg_arrow)).
-:- use_module(plDcg(dcg_atom)).
-:- use_module(plDcg(dcg_generics)).
+:- use_module(plc(dcg/dcg_arrow)).
+:- use_module(plc(dcg/dcg_atom)).
+:- use_module(plc(dcg/dcg_generics)).
+:- use_module(plc(generics/list_ext)).
+:- use_module(plc(prolog/pl_log)).
 
 :- use_module(plGraph(s_graph/s_graph_edge)).
 
 :- use_module(plHtml(html_dcg)).
-:- use_module(plHtml(html_table)).
+:- use_module(plHtml(elements/html_table)).
 
 :- predicate_options(export_graph_to_html_table//2, 2, [
-     border_width(+boolean),
-     include_edges(+boolean),
-     pass_to(html_table//3, 3)
-   ]).
+  border_width(+boolean),
+  include_edges(+boolean),
+  pass_to(html_table//3, 3)
+]).
 
 
 

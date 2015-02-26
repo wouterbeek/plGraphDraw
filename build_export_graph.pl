@@ -57,44 +57,43 @@ Vertex coordinates:
 :- use_module(library(option)).
 :- use_module(library(ordsets)).
 
-:- use_module(generics(list_ext)).
-:- use_module(generics(option_ext)).
+:- use_module(plc(generics/list_ext)).
+:- use_module(plc(generics/option_ext)).
 
 :- use_module(plGraph(s_graph/s_graph)).
 :- use_module(plGraph(s_graph/s_graph_edge)).
 
 :- predicate_options(build_export_graph/4, 4, [
-     pass_to(edge_term/3, 3),
-     pass_to(graph_attributes/2, 2),
-     pass_to(vertex_term/3, 3)
-   ]).
+  pass_to(edge_term/3, 3),
+  pass_to(graph_attributes/2, 2),
+  pass_to(vertex_term/3, 3)
+]).
 :- predicate_options(edge_term/3, 3, [
-     edge_arrowhead(+callable),
-     edge_color(+callable),
-     edge_id(+callable),
-     edge_label(+callable),
-     edge_penwidth(+callable),
-     edge_style(+callable)
-   ]).
+  edge_arrowhead(+callable),
+  edge_color(+callable),
+  edge_id(+callable),
+  edge_label(+callable),
+  edge_penwidth(+callable),
+  edge_style(+callable)
+]).
 :- predicate_options(graph_attributes/2, 2, [
-     graph_charset(+oneof(['iso-8859-1','Latin1','UTF-8'])),
-     graph_colorscheme(+oneof([none,svg,x11])),
-     graph_directed(+boolean),
-     graph_fontsize(+float),
-     graph_label(+callable),
-     graph_overlap(+boolean)
-   ]).
-
+  graph_charset(+oneof(['iso-8859-1','Latin1','UTF-8'])),
+  graph_colorscheme(+oneof([none,svg,x11])),
+  graph_directed(+boolean),
+  graph_fontsize(+float),
+  graph_label(+callable),
+  graph_overlap(+boolean)
+]).
 :- predicate_options(vertex_term/3, 3, [
-     vertex_color(+callable),
-     vertex_id(+callable),
-     vertex_image(+callable),
-     vertex_label(+callable),
-     vertex_peripheries(+callable),
-     vertex_position(+callable),
-     vertex_shape(+callable),
-     vertex_uri(+callable)
-   ]).
+  vertex_color(+callable),
+  vertex_id(+callable),
+  vertex_image(+callable),
+  vertex_label(+callable),
+  vertex_peripheries(+callable),
+  vertex_position(+callable),
+  vertex_shape(+callable),
+  vertex_uri(+callable)
+]).
 
 :- meta_predicate(build_export_graph(+,+,-,:)).
 

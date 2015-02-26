@@ -28,8 +28,10 @@ Bipartite graph plotting.
 :- use_module(plGraphDraw(plot_generics)).
 
 :- predicate_options(bipartite_plot/2, 2, [
-     pass_to(surface_size/2, 2)
-   ]).
+  pass_to(surface_size/2, 2)
+]).
+
+
 
 
 

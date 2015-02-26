@@ -18,15 +18,17 @@ Circular graph plotting.
 @version 2014/11
 */
 
-:- use_module(generics(list_ext)).
+:- use_module(plc(generics/list_ext)).
 
 :- use_module(plSvg(svg_dcg)).
 
 :- use_module(plGraphDraw(plot_generics)).
 
 :- predicate_options(random_plot/4, 2, [
-     surface_size(+pair(float))
-   ]).
+  surface_size(+pair(float))
+]).
+
+
 
 
 

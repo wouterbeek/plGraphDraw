@@ -30,6 +30,8 @@ Convert from GIF (Graph Interchange Format) to SVG.
 
 
 
+
+
 %! edge( +Vertices:ordset, +Edge:compound)// .
 % Generates the SVG element for the given edge term.
 

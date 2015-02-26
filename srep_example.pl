@@ -9,7 +9,7 @@
 :- use_module(library(aggregate)).
 :- use_module(library(random)).
 
-:- use_module(plGraph(s_graph/s_graph)).
+:- use_module(plGraph(l_graph/l_graph)).
 
 :- use_module(plGraphViz(gv_file)).
 
@@ -22,7 +22,7 @@ srep_example:-
 
 srep_example(N):-
   aggregate_all(
-    set(V-W),
+    set(edge(V,_,W)),
     (
       between(1, N, _),
       random_between(1, N, V),
@@ -30,6 +30,9 @@ srep_example(N):-
     ),
     Es
   ),
-  s_edges_vertices(Es, Vs),
+  l_edges_vertices(Es, Vs),
   build_export_graph(Vs, Es, ExportG, []),
   export_graph_to_gv_file(ExportG, _, []).
+
+
+

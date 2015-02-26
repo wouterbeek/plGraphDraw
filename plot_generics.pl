@@ -24,8 +24,8 @@ positions in iterations of spring embedding.
 :- use_module(library(settings)).
 
 :- predicate_options(surface_size/2, 2, [
-     surface_size(+pair(float))
-   ]).
+  surface_size(+pair(float))
+]).
 
 :- setting(
   default_surface_size,
@@ -33,6 +33,8 @@ positions in iterations of spring embedding.
   10.0-10.0,
   'The default size of the drawing surface.'
 ).
+
+
 
 
 
