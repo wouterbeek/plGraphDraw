@@ -57,7 +57,7 @@ export_graph_to_html_table(graph(_,ETerms,GAttrs), Options1) -->
     
     % Specify table border width.
     option(border_width(BorderWidth), Options1, 1),
-    dcg_phrase(html_style(border-BorderWidth), Style),
+    atom_phrase(html_style(border-BorderWidth), Style),
     merge_options([style=Style], Options1, Options2),
     
     % Graph name, if any.
@@ -75,7 +75,7 @@ export_graph_to_html_table(graph(_,ETerms,GAttrs), Options1) -->
 %! edge_row(+IncludeEdge:boolean, +EdgeTerm:compound, -DataRow:list) is det.
 
 edge_row(false, edge(From,To,_), [From,Edge,To]):-
-  dcg_phrase(transition(atom(From), atom(To)), Edge).
+  atom_phrase(transition(atom(From), atom(To)), Edge).
 edge_row(true, edge(From,To,_), [From,To]).
 
 
@@ -89,7 +89,7 @@ graph_cell(Options, edge(FromId,ToId,_)) -->
     ->  call(ColorFunction, FromId-ToId, EColor)
     ;   EColor = black
     ),
-    dcg_phrase(html_style(color-EColor), Style),
+    atom_phrase(html_style(color-EColor), Style),
     
     % Label.
     (   option(edge_label(LabelFunction), Options)
@@ -105,7 +105,7 @@ graph_cell(Options, vertex(_,V,_)) -->
     ->  call(ColorFunction, V, VColor)
     ;   VColor = black
     ),
-    dcg_phrase(html_style(color-VColor), Style),
+    atom_phrase(html_style(color-VColor), Style),
     
     % Label.
     (   option(vertex_label(LabelFunction), Options)
