@@ -19,7 +19,7 @@ Generates HTML tables representing collections of coordinates.
 
 :- use_module(plc(generics/pair_ext)).
 
-:- use_module(plHtml(elements/html_table)).
+:- use_module(plHtml(element/html_table)).
 
 :- predicate_options(coords_table//2, 2, [
   pass_to(html_table//3, 3)

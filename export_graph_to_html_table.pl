@@ -27,7 +27,7 @@ Generate HTML tables representing graphs using the GIF representation.
 :- use_module(plGraph(s_graph/s_graph_edge)).
 
 :- use_module(plHtml(html_dcg)).
-:- use_module(plHtml(elements/html_table)).
+:- use_module(plHtml(element/html_table)).
 
 :- predicate_options(export_graph_to_html_table//2, 2, [
   border_width(+boolean),
