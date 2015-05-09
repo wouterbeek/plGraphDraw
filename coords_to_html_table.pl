@@ -11,18 +11,19 @@
 Generates HTML tables representing collections of coordinates.
 
 @author Wouter Beek
-@version 2014/11
+@version 2014/11, 2015/05
 */
 
 :- use_module(library(apply)).
 :- use_module(library(http/html_write)).
+:- use_module(library(option)).
 
 :- use_module(plc(generics/pair_ext)).
 
-:- use_module(plHtml(element/html_table)).
+:- use_module(library(wl/format/wl_table)).
 
 :- predicate_options(coords_table//2, 2, [
-  pass_to(html_table//3, 3)
+  pass_to(wl_direct_table//2, 2)
 ]).
 
 
@@ -35,9 +36,10 @@ Generates HTML tables representing collections of coordinates.
 %! )// is det.
 % Generates an HTML table showing vertex coordinates.
 
-coords_table(Coords, Options) -->
+coords_table(Coords, Options0) -->
   {
     HeaderRow = ['X','Y'],
-    maplist(pair_list, Coords, DataRows)
+    maplist(pair_list, Coords, DataRows),
+    merge_options([caption(html('Coordinates table.'))], Options0, Options)
   },
-  html_table(html('Coordinates table.'), [HeaderRow|DataRows], Options).
+  wl_direct_table([head(HeaderRow)|DataRows], Options).

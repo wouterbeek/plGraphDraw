@@ -17,6 +17,7 @@ Generate HTML tables representing graphs using the GIF representation.
 :- use_module(library(apply)).
 :- use_module(library(http/html_write)).
 :- use_module(library(option)).
+:- use_module(library(wl/format/wl_table)).
 
 :- use_module(plc(dcg/dcg_arrow)).
 :- use_module(plc(dcg/dcg_atom)).
@@ -27,12 +28,11 @@ Generate HTML tables representing graphs using the GIF representation.
 :- use_module(plGraph(s_graph/s_graph_edge)).
 
 :- use_module(plHtml(html_dcg)).
-:- use_module(plHtml(element/html_table)).
 
 :- predicate_options(export_graph_to_html_table//2, 2, [
   border_width(+boolean),
   include_edges(+boolean),
-  pass_to(html_table//3, 3)
+  pass_to(wl_direct_table//2, 2)
 ]).
 
 
@@ -61,14 +61,18 @@ export_graph_to_html_table(graph(_,ETerms,GAttrs), Options1) -->
     merge_options([style=Style], Options1, Options2),
     
     % Graph name, if any.
-    option(name(GName), GAttrs, noname)
+    option(name(GName), GAttrs, noname),
+    
+    merge_options(
+      [
+        caption(html(['Table representing graph ',GName,'.'])),
+        cell(graph_cell(Options2))
+      ],
+      Options2,
+      Options3
+    )
   },
-  html_table(
-    html(['Table representing graph ',GName,'.']),
-    graph_cell(Options2),
-    [HeaderRow|DataRows],
-    Options2
-  ).
+  wl_direct_table([head(HeaderRow)|DataRows], Options3).
 
 
 
