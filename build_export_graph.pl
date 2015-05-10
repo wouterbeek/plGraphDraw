@@ -1,9 +1,8 @@
 :- module(
   build_export_graph,
   [
-    build_export_graph/4 % +Vs:ordset
-                         % +Es:ordset(compound)
-                         % -ExportG:compound
+    build_export_graph/3 % +Graph:compound
+                         % -ExportGraph:compound
                          % +Options:list(nvpair)
   ]
 ).
@@ -50,7 +49,7 @@ Vertex coordinates:
 ---
 
 @author Wouter Beek
-@version 2014/06-2014/07, 2014/10-2015/01
+@version 2014/06-2014/07, 2014/10-2015/01, 2015/05
 */
 
 :- use_module(library(apply)).
@@ -81,7 +80,7 @@ Vertex coordinates:
   graph_colorscheme(+oneof([none,svg,x11])),
   graph_directed(+boolean),
   graph_fontsize(+float),
-  graph_label(+callable),
+  graph_label(+atom),
   graph_overlap(+boolean)
 ]).
 :- predicate_options(vertex_term/3, 3, [
@@ -95,7 +94,7 @@ Vertex coordinates:
   vertex_uri(+callable)
 ]).
 
-:- meta_predicate(build_export_graph(+,+,-,:)).
+:- meta_predicate(build_export_graph(+,-,:)).
 
 is_meta(edge_arrowhead).
 is_meta(edge_color).
@@ -117,13 +116,12 @@ is_meta(vertex_uri).
 
 
 %! build_export_graph(
-%!   +Vs:ordset,
-%!   +Es:ordset,
-%!   -ExportG:compound,
+%!   +Graph:compound,
+%!   -ExportGraph:compound,
 %!   +Options:list(nvpair)
 %! ) is det.
 
-build_export_graph(Vs, Es, graph(VTerms,ETerms,GAttrs), Options1):-
+build_export_graph(graph(Vs,Es), graph(VTerms,ETerms,GAttrs), Options1):-
   meta_options(is_meta, Options1, Options2),
 
   % V terms.
@@ -220,7 +218,7 @@ edge_term(Vs, E, edge(FromId,ToId,EAttrs), Options):-
 %   - `graph_fontsize(+float)`
 %     The font size of text in the graph.
 %     Default: `11.0`.
-%   - `graph_label(+callable)`
+%   - `graph_label(+atom)`
 %     The graph label.
 %     No default.
 %   - `graph_overlap(+boolean)`
@@ -237,9 +235,7 @@ graph_attributes(GAttrs, Options):-
   % Fontsize.
   option(graph_fontsize(Fontsize), Options, 11.0),
   % Label.
-  if_option(graph_label(GLabel), Options,
-    true
-  ),
+  option(graph_label(GLabel), Options, ''),
   % Overlap.
   option(graph_overlap(Overlap), Options, false),
 

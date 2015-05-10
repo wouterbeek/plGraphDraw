@@ -31,5 +31,5 @@ srep_example(N):-
     Es
   ),
   l_edges_vertices(Es, Vs),
-  build_export_graph(Vs, Es, ExportG, []),
+  build_export_graph(graph(Vs,Es), ExportG, []),
   export_graph_to_gv_file(ExportG, _, []).
